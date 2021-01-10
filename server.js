@@ -1,49 +1,56 @@
+const path = require("path");
 const express = require("express");
+
 const {
-  getCustomers,
-  getCustomerById,
-  createNewCustomer,
-  updateCustomerById,
-  deleteCustomerById,
+  getEmployeesAll,
+  getEmployees,
+  getEmployeeById,
+  createNewEmployee,
+  updateEmployeeById,
+  deleteEmployeeById,
 } = require("./data/data.controller");
 
 const app = express();
 
 app.use(express.json());
 
-app.get("/api/customers", (req, res) => {
-  res.json(getCustomers());
+app.get("/api/employees/all", (req, res) => {
+  res.json(getEmployeesAll());
 });
 
-app.get("/api/customers/:id", (req, res) => {
+app.get("/api/employees", (req, res) => {
+  const { q: query, p: page, l: limit } = req.query;
+  res.json(getEmployees(query, page, limit));
+});
+
+app.get("/api/employees/:id", (req, res) => {
   const { id } = req.params;
-  res.json(getCustomerById(Number(id)));
+  res.json(getEmployeeById(Number(id)));
 });
 
-app.post("/api/customers/create", (req, res) => {
-  // {
-  //   id: 11,
-  //   first_name: "Callean",
-  //   last_name: "Sprouls",
-  //   email: "csproulsa@creativecommons.org",
-  //   gender: "Male",
-  //   department: "Product Management",
-  // };
-
-  createNewCustomer(req.body);
-  res.json(getCustomers());
+app.post("/api/employees/create", (req, res) => {
+  createNewEmployee(req.body);
+  res.json(getEmployees());
 });
 
-app.post("/api/customers/update/:id", (req, res) => {
+app.post("/api/employees/update/:id", (req, res) => {
   const { id } = req.params;
-  updateCustomerById(Number(id), req.body);
+  updateEmployeeById(Number(id), req.body);
   res.json("Updated");
 });
 
-app.delete("/api/customers/:id", (req, res) => {
+app.delete("/api/employees/:id", (req, res) => {
   const { id } = req.params;
-  deleteCustomerById(Number(id));
-  res.json(getCustomers());
+  deleteEmployeeById(Number(id));
+  res.json(getEmployees());
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  });
+}
 
 app.listen(5000, () => console.log("Server listening on port: 5000"));

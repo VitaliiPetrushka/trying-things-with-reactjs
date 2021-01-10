@@ -1,0 +1,13 @@
+.page {
+  padding: 55px 0;
+}
+
+header {
+  margin: 20px 0;
+  margin-bottom: 30px;
+}
+
+header .header--title {
+  font-size: 50px;
+  font-weight: bold;
+}

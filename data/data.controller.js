@@ -1,31 +1,57 @@
-let customers = require("./data");
+let employees = require("./index");
 
-const getCustomers = () => {
-  return customers;
+const getEmployeesAll = () => {
+  return {
+    employees,
+    totalCount: employees.length,
+  };
 };
 
-const getCustomerById = (id) => {
-  return customers.find((customer) => customer.id === id);
+const getEmployees = (query, page, limit) => {
+  const _p = page || 1;
+  const _l = limit || 10;
+  const start = (_p - 1) * _l;
+  const end = _p * _l;
+  let query_result = null;
+
+  if (query) {
+    query_result = employees.filter((e) =>
+      e.first_name.toLowerCase().startsWith(query.toLowerCase())
+    );
+  }
+
+  const _employees = query_result || employees;
+  return {
+    employees: _employees.slice(start, end),
+    totalCount: _employees.length,
+  };
 };
 
-const createNewCustomer = (customer) => {
-  customers = [...customers, customer];
+const getEmployeeById = (id) => {
+  return employees.find((employee) => employee.id === id);
 };
 
-const deleteCustomerById = (id) => {
-  customers = customers.filter((customer) => customer.id !== id);
+const createNewEmployee = (employee) => {
+  let employees_length = employees.length;
+  employee.id = employee.id || ++employees_length;
+  employees = [...employees, employee];
 };
 
-const updateCustomerById = (id, newCustomer) => {
-  customers = customers.map((customer) =>
-    customer.id === id ? { ...customer, ...newCustomer } : customer
+const deleteEmployeeById = (id) => {
+  employees = employees.filter((employee) => employee.id !== id);
+};
+
+const updateEmployeeById = (id, newEmployee) => {
+  employees = employees.map((employee) =>
+    employee.id === id ? { ...employee, ...newEmployee } : employee
   );
 };
 
 module.exports = {
-  getCustomers,
-  getCustomerById,
-  createNewCustomer,
-  deleteCustomerById,
-  updateCustomerById,
+  getEmployeesAll,
+  getEmployees,
+  getEmployeeById,
+  createNewEmployee,
+  deleteEmployeeById,
+  updateEmployeeById,
 };

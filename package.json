@@ -9,7 +9,7 @@
     "client:build": "cd client && npm run  build",
     "prod": "better-npm-run prod"
   },
-  "betterScripts" : {
+  "betterScripts": {
     "prod": {
       "command": "npm run client:build && node server",
       "env": {

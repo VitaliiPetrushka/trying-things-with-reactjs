@@ -60,7 +60,7 @@ function Edit({ employee, isLoading, error }) {
 
   useEffect(() => {
     dispatch(fetchEmployee(id));
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <div className="page">

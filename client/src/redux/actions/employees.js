@@ -41,7 +41,7 @@ export const fetchEmployees = (page, limit, query) => async (dispatch) => {
 export const deleteEmployee = (id) => async (dispatch) => {
   dispatch(setLoading());
   try {
-    const res = await axios.delete(`/api/employees/${id}`);
+    await axios.delete(`/api/employees/${id}`);
     dispatch(deleteEmployeeSuccess());
   } catch (error) {
     dispatch(setError(error));
@@ -51,7 +51,7 @@ export const deleteEmployee = (id) => async (dispatch) => {
 export const addNewEmployee = (data) => async (dispatch) => {
   dispatch(setLoading());
   try {
-    const res = await axios.post("/api/employees/create", data);
+    await axios.post("/api/employees/create", data);
     dispatch(addEmployeeSuccess());
   } catch (error) {
     dispatch(setError(error));

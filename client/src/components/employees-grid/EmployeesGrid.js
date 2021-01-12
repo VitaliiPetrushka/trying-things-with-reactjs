@@ -41,7 +41,7 @@ export function EmployeesGrid() {
 
   useEffect(() => {
     dispatch(fetchEmployees(page + 1, rowsPerPage, searchQuery));
-  }, [searchQuery, page, rowsPerPage]);
+  }, [searchQuery, page, rowsPerPage, dispatch]);
 
   const handleDeleteEmployee = async (id) => {
     await dispatch(deleteEmployee(id));

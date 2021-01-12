@@ -20,6 +20,7 @@ import {
   getEmployees,
   getLoading,
   getEmployeesTotalCount,
+  getError,
 } from "../../redux/selectors/employees";
 
 export function EmployeesGrid() {
@@ -30,16 +31,21 @@ export function EmployeesGrid() {
   const employees = useSelector(getEmployees);
   const employeesTotalCount = useSelector(getEmployeesTotalCount);
   const isLoading = useSelector(getLoading);
+  const isError = useSelector(getError);
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(fetchEmployees(searchQuery, page + 1, rowsPerPage));
+    document.title = "Employees";
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchEmployees(page + 1, rowsPerPage, searchQuery));
   }, [searchQuery, page, rowsPerPage]);
 
-  const handleDeleteEmployee = (id) => {
-    dispatch(deleteEmployee(id));
-    dispatch(fetchEmployees(page + 1, rowsPerPage));
+  const handleDeleteEmployee = async (id) => {
+    await dispatch(deleteEmployee(id));
+    if (!isLoading && !isError) dispatch(fetchEmployees(page + 1, rowsPerPage));
   };
 
   return (

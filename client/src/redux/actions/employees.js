@@ -25,10 +25,10 @@ export const addEmployeeSuccess = () => {
   return { type: ADD_EMPLOYEE_SUCCESS };
 };
 
-export const fetchEmployees = (query, page, limit) => async (dispatch) => {
+export const fetchEmployees = (page, limit, query) => async (dispatch) => {
   dispatch(setLoading());
   try {
-    const q = query && query.trim();
+    const q = (query && query.trim()) || "";
     const p = page || 1;
     const l = limit || 5;
     const { data } = await axios.get(`/api/employees/?q=${q}&p=${p}&l=${l}`);

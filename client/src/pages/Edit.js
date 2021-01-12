@@ -66,7 +66,9 @@ function Edit({ employee, isLoading, isError }) {
     <div className="page">
       <Container maxWidth="md">
         <header>
-          <div className="header--title">Edit employee {id}</div>
+          <div className="header--title">
+            {employee ? `Edit employee ${id}` : `No employee found`}
+          </div>
         </header>
         {!employee && isLoading && <CircularProgress />}
         {employee && (

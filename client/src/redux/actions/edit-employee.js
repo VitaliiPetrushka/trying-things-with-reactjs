@@ -12,16 +12,16 @@ export const fetchEmployeeLoading = () => {
   return { type: FETCH_EMPLOYEE_LOADING };
 };
 
-export const fetchEmployeeError = () => {
-  return { type: FETCH_EMPLOYEE_LOADING };
+export const fetchEmployeeError = (error) => {
+  return { type: FETCH_EMPLOYEE_ERROR, error };
 };
 
 export const updateEmployeeLoading = () => {
   return { type: UPDATE_EMPLOYEE_LOADING };
 };
 
-export const updateEmployeeError = () => {
-  return { type: UPDATE_EMPLOYEE_ERROR };
+export const updateEmployeeError = (error) => {
+  return { type: UPDATE_EMPLOYEE_ERROR, error };
 };
 
 export const fetchEmployeeSuccess = (data) => {
@@ -42,14 +42,14 @@ export const fetchEmployee = (id) => async (dispatch) => {
     const { data } = await axios.get(`/api/employees/${id}`);
     dispatch(fetchEmployeeSuccess(data));
   } catch (error) {
-    dispatch(fetchEmployeeError(error));
+    dispatch(fetchEmployeeError(error.response.data));
   }
 };
 
 export const updateEmployee = (id, data) => async (dispatch) => {
   dispatch(updateEmployeeLoading());
   try {
-    const res = await axios.post(`/api/employees/update/${id}`, data);
+    await axios.post(`/api/employees/update/${id}`, data);
     dispatch(updateEmployeeSuccess());
   } catch (error) {
     dispatch(updateEmployeeError(error));

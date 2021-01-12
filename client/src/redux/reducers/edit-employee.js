@@ -11,7 +11,8 @@ import {
 const initialState = {
   loading: false,
   data: null,
-  error: null,
+  error: false,
+  errorMessage: null,
 };
 
 export default function (state = initialState, action) {
@@ -41,7 +42,14 @@ export default function (state = initialState, action) {
         loading: false,
       };
     }
-    case FETCH_EMPLOYEE_ERROR:
+    case FETCH_EMPLOYEE_ERROR: {
+      return {
+        ...state,
+        error: true,
+        errorMessage: action.error,
+        loading: false,
+      };
+    }
     case UPDATE_EMPLOYEE_ERROR: {
       return {
         ...state,

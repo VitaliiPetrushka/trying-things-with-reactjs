@@ -25,7 +25,8 @@ app.get("/api/employees", (req, res) => {
 
 app.get("/api/employees/:id", (req, res) => {
   const { id } = req.params;
-  res.json(getEmployeeById(Number(id)));
+  const employee = getEmployeeById(Number(id));
+  employee ? res.json(employee) : res.status(404).send("No employee found");
 });
 
 app.post("/api/employees/create", (req, res) => {

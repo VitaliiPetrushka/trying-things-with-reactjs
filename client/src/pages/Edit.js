@@ -28,7 +28,7 @@ import {
 } from "../redux/selectors/edit-employee";
 import "./index.css";
 
-function Edit({ employee, isLoading, isError }) {
+function Edit({ employee, isLoading, error }) {
   const { id } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -50,12 +50,12 @@ function Edit({ employee, isLoading, isError }) {
 
     dispatch(updateEmployee(id, data));
 
-    if (!isLoading && !isError) history.push("/");
+    if (!isLoading && !error.isError) history.push("/");
   };
 
   const handleCancel = () => {
-    history.push("/");
     dispatch(updateEmployeeCancel());
+    history.push("/");
   };
 
   useEffect(() => {
@@ -67,7 +67,8 @@ function Edit({ employee, isLoading, isError }) {
       <Container maxWidth="md">
         <header>
           <div className="header--title">
-            {employee ? `Edit employee ${id}` : `No employee found`}
+            {employee && !isLoading && `Edit employee ${id}`}
+            {error.isError && error.errorMessage}
           </div>
         </header>
         {!employee && isLoading && <CircularProgress />}
@@ -157,7 +158,7 @@ function Edit({ employee, isLoading, isError }) {
 const mapStateToProps = (state) => ({
   employee: getEmployee(state),
   isLoading: getLoading(state),
-  isError: getError(state),
+  error: getError(state),
 });
 
 export default connect(mapStateToProps)(Edit);
